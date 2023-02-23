@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  moons-service:
+    container_name: moons-service
+#    image: fasbekdohub/universe:moons-microservice
+#    image: moons-microservice:v2
+    build:
+      context: ./
+      dockerfile: ./moons-microservice/Dockerfile
+    ports: 
+      - "8002:8002"
+#    env_file: ./moons-microservice/.env
+    environment:
+      PORT: 8002
+      DB_DATABASE: oursolarsystemdb
+      DB_PASSWORD: Impresora@Administradorpr
+      DB_USERNAME: Fasadministrador@spacedbserverpr
+    networks:
+      - string
+    restart: always
+      
+  space-microservice:
+    container_name: space-microservice
+ #   image: fasbekdohub/universe:space-microservice
+    build:
+      context: ./
+      dockerfile: ./space-microservice/Dockerfile
+    ports: 
+      - "8001:8001"
+#    env_file: ./space-microservice/.env
+    environment:
+      PORT: 8001
+      DB_DATABASE: oursolarsystemdb
+      DB_PASSWORD: Impresora@Administradorpr
+      DB_USERNAME: Fasadministrador@spacedbserverpr
+    depends_on:
+      - moons-service
+    restart: always
+    networks:
+      - string
+      
+networks:
+  string:
+    name: spring
+
+  
